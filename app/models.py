@@ -4,8 +4,16 @@ from django.db import models
 
 class Category(models.Model):
  name = models.CharField(max_length=100)
+
  def __str__(self):
   return self.name
+
+ class Meta:
+        db_table = 'task_manager_category'
+        verbose_name = 'Category'
+        constraints = [
+            models.UniqueConstraint(fields=['name'], name='unique_category_name')  # уникальность по полю name
+        ]
 
 class Task(models.Model):
  STATUS_CHOICES = [
@@ -27,15 +35,13 @@ class Task(models.Model):
  created_at = models.DateTimeField(auto_now_add=True)
  created_date = models.DateField(auto_now_add=True)
 
- def __str__(self):
-  return self.title
-
  class Meta:
   constraints = [
-   models.UniqueConstraint(fields=['title', 'created_date'], name='unique_title_per_day')
+   models.UniqueConstraint(fields=['title'], name='task_manager_task')
   ]
-
-
+ db_table = 'task_manager_task'
+ ordering = ['-created_at']
+ verbose_name = 'Task'
 
 class SubTask(models.Model):
  title = models.CharField(max_length=100)
@@ -45,5 +51,15 @@ class SubTask(models.Model):
  task = models.ForeignKey(Task, on_delete=models.CASCADE)
  deadline = models.DateTimeField()
  created_at = models.DateTimeField(auto_now_add=True)
+
  def __str__(self):
   return self.title
+
+
+class Meta:
+ db_table = 'task_manager_subtask'
+ ordering = ['-created_at']
+ verbose_name = 'SubTask'
+ constraints = [
+  models.UniqueConstraint(fields=['title'], name='unique_subtask_title')
+ ]
