@@ -29,7 +29,13 @@ def task_create(request):
 
 @api_view(['GET'])
 def list_of_tasks(request) -> Response:
-    tasks = Task.objects.all()
+    filters = {}
+    day_of_week = request.query_params.get('day_of_week')
+
+    if day_of_week:
+        filters['created_at__week_day'] = day_of_week
+
+    tasks = Task.objects.filter(**filters)
 
     serializer = TaskListSerializer(tasks, many=True)
 
