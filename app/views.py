@@ -90,8 +90,20 @@ class SubtaskListCreateView(APIView, PageNumberPagination):
         page_size = request.query_params.get('page_size')
         self.page_size = page_size if page_size and page_size.isdigit() else self.DEFAULT_PAGE_SIZE
 
+        filters = {}
+        task_name = request.query_params.get('task_name')
+        status = request.query_params.get('status')
+
+        if status:
+            filters['status'] = status
+
+        if task_name:
+            filters['task__title'] = task_name
+
+        subtasks = SubTask.objects.filter(**filters).order_by('-created_at')
+
         subtasks = self.paginate_queryset(
-            SubTask.objects.all().order_by('-created_at'), request, view=self
+            subtasks, request, view=self
         )
 
         serializer = SubTaskListSerializer(subtasks, many=True)
