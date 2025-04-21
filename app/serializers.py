@@ -28,12 +28,6 @@ class TaskListSerializer(serializers.ModelSerializer):
             'deadline'
         ]
 
-class TaskDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Task
-        fields = '__all__'
-
-
 class SubTaskSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=100)
     description = serializers.CharField(allow_blank=True, required=False)
@@ -51,6 +45,21 @@ class SubTaskSerializer(serializers.ModelSerializer):
             'deadline',
             'created_at'
         ]
+
+
+class TaskDetailSerializer(serializers.ModelSerializer):
+    subtasks = SubTaskSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Task
+        fields = [
+            'id',
+            'title',
+            'status',
+            'deadline',
+            'subtasks'
+        ]
+
 
 class CategoryCreateSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=100)

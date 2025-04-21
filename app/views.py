@@ -57,7 +57,7 @@ def task_stats(request) -> Response:
 @api_view(['GET'])
 def get_task_detail(request, task_id: int) -> Response:
     try:
-        book = Task.objects.get(id=task_id)
+        task = Task.objects.get(id=task_id)
     except Task.DoesNotExist:
         return Response(
             data={
@@ -66,7 +66,7 @@ def get_task_detail(request, task_id: int) -> Response:
             status=404
         )
 
-    serializer = TaskDetailSerializer(book)
+    serializer = TaskDetailSerializer(task)
 
     return Response(
         data=serializer.data,
