@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -82,11 +83,19 @@ def get_task_detail(request, task_id: int) -> Response:
     )
 
 
-class SubtaskListCreateView(APIView):
+class SubtaskListCreateView(APIView, PageNumberPagination):
+    DEFAULT_PAGE_SIZE = 5
+
     def get(self, request):
-        subtasks = SubTask.objects.all()
+        page_size = request.query_params.get('page_size')
+        self.page_size = page_size if page_size and page_size.isdigit() else self.DEFAULT_PAGE_SIZE
+
+        subtasks = self.paginate_queryset(
+            SubTask.objects.all().order_by('-created_at'), request, view=self
+        )
+
         serializer = SubTaskListSerializer(subtasks, many=True)
-        return Response(serializer.data)
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request):
         serializer = SubTaskSerializer(data=request.data)
