@@ -1,4 +1,5 @@
 from django.db import models
+from app.managers import SoftDeleteManager
 
 
 class Category(models.Model):
@@ -6,12 +7,16 @@ class Category(models.Model):
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True)
 
+    objects = SoftDeleteManager()
+
     def __str__(self):
         return self.name
 
     def delete(self, *args, **kwargs):
         self.is_deleted = True
         self.save()
+
+
 
     class Meta:
         db_table = 'task_manager_category'
