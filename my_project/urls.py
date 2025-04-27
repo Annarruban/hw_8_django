@@ -16,10 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls.conf import include
+from rest_framework.routers import DefaultRouter
 
 from app import views
+from app.views.category import CategoryViewSet
 from app.views.task import TaskListCreateView,  TaskRetrieveUpdateDestroyView, task_stats
 from app.views.subtask import SubtaskRetrieveUpdateDestroyView, SubtaskListCreateView
+
+router = DefaultRouter()
+router.register(r'category', CategoryViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +36,6 @@ urlpatterns = [
     path('task/stats/', task_stats),
     path('subtask/', SubtaskListCreateView.as_view(), name='subtask-list-create'),
     path('subtask/<int:pk>/', SubtaskRetrieveUpdateDestroyView.as_view(),
-         name='subtask-detail-update-delete')
+         name='subtask-detail-update-delete'),
+    path('', include(router.urls)),
 ]

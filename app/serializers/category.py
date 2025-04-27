@@ -2,7 +2,7 @@ from app.models import Category
 from rest_framework import serializers
 
 
-class CategoryCreateSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=100)
 
     def _assert_name_unique(self, name):
