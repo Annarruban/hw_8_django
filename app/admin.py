@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.db.models import QuerySet
 
-from app.models import Task, SubTask, Category
+from app.models import Task, SubTask
+from app.models.category import Category
+
 
 # в этом файле мы регистрируем те модели, которые нужны нам в работе в Админ панели по URL /admin
 

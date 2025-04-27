@@ -6,7 +6,9 @@ from django.utils import timezone
  ('DJANGO_SETTINGS_MODULE', 'my_project.settings'))
 django.setup()
 
-from app.models import Category, Task, SubTask
+from app.models.subtask import SubTask
+from app.models.task import Task
+from app.models.category import Category
 import datetime
 from django.db.models import F
 
