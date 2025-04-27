@@ -16,19 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+
 from app import views
-from app.views import task_create, list_of_tasks, get_task_detail, task_stats, SubtaskListCreateView, \
-    SubTaskDetailUpdateDeleteView
+from app.views.task import TaskListCreateView,  TaskRetrieveUpdateDestroyView, task_stats
+from app.views.subtask import SubtaskRetrieveUpdateDestroyView, SubtaskListCreateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('greetings/', views.user_greetings),
-    path('task/create/', task_create),
-    path('task/', list_of_tasks),
-    path('task/<int:task_id>/', get_task_detail),
+    path('greetings/', views.other.user_greetings),
+    path('task/create/', TaskListCreateView.as_view(), name='task_create'),
+    path('task/',  TaskListCreateView.as_view()),
+    path('task/<int:task_id>/', TaskRetrieveUpdateDestroyView.as_view()),
     path('task/stats/', task_stats),
     path('subtask/', SubtaskListCreateView.as_view(), name='subtask-list-create'),
-    path('subtask/<int:pk>/', SubTaskDetailUpdateDeleteView.as_view(),
-         name='subtask-detail-update-delete'
-         ),
+    path('subtask/<int:pk>/', SubtaskRetrieveUpdateDestroyView.as_view(),
+         name='subtask-detail-update-delete')
 ]
