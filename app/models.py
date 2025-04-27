@@ -11,6 +11,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def delete(self, *args, **kwargs):
+        self.is_deleted = True
+        self.save()
+
     class Meta:
         db_table = 'task_manager_category'
         verbose_name = 'Category'
