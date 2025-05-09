@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 from environ import Env
 
@@ -151,4 +152,40 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer'
     ],
     'DEFAULT_PAGINATION_CLASS': 'app.pagination.CustomCursorPagination'
+}
+
+LOG_DIR = 'logs'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+        'request_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, LOG_DIR, 'http_logs.log')
+        },
+        'db_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, LOG_DIR, 'db_logs.log')
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['db_file'],
+            'level': 'DEBUG',
+        },
+        'django.server': {
+            'handlers': ['request_file'],
+            'level': 'DEBUG'
+        },
+        'django.request': {
+            'handler': ['console'],
+            'level': 'DEBUG'
+        }
+    },
 }
