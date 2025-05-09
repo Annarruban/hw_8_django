@@ -45,8 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3-rd party
     'django_filters',
+    'rest_framework',
     # local
     'app.apps.AppConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -147,5 +149,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer'
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'app.pagination.CustomCursorPagination'
 }
