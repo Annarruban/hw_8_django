@@ -1,12 +1,14 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics
-
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from app.models import SubTask
 from app.serializers.subtask import SubTaskSerializer, SubTaskListSerializer
 
 
 class SubtaskListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     queryset = SubTask.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['status', 'deadline']
@@ -18,5 +20,7 @@ class SubtaskListCreateView(generics.ListCreateAPIView):
 
 
 class SubtaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     queryset = SubTask.objects.all()
     serializer_class = SubTaskSerializer
