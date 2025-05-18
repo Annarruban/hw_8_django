@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from app import views
 from app.views.category import CategoryViewSet
@@ -28,6 +29,8 @@ router = DefaultRouter()
 router.register(r'category', CategoryViewSet)
 
 urlpatterns = [
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
     path('greetings/', views.other.user_greetings),
     path('task/create/', TaskListCreateView.as_view(), name='task_create'),
