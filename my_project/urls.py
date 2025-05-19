@@ -36,7 +36,7 @@ urlpatterns = [
     path('task/create/', TaskListCreateView.as_view(), name='task_create'),
     path('task/',  TaskListCreateView.as_view()),
     path('task/my', UserTaskListView.as_view()),
-    path('task/<int:task_id>/', TaskRetrieveUpdateDestroyView.as_view()),
+    path('task/<int:pk>/', TaskRetrieveUpdateDestroyView.as_view()),
     path('task/stats/', task_stats),
     path('subtask/', SubtaskListCreateView.as_view(), name='subtask-list-create'),
     path('subtask/<int:pk>/', SubtaskRetrieveUpdateDestroyView.as_view(),

@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework import filters, generics
 
 from app.models import Task
+from app.permissions import IsOwnerOrReadOnly
 from app.serializers.task import TaskCreateSerializer, TaskListSerializer, TaskDetailSerializer
 
 
@@ -62,5 +63,6 @@ def task_stats(request) -> Response:
 
 
 class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Task.objects.all()
     serializer_class = TaskDetailSerializer

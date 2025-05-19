@@ -3,6 +3,7 @@ from rest_framework import filters, generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from app.models import SubTask
+from app.permissions import IsOwnerOrReadOnly
 from app.serializers.subtask import SubTaskSerializer, SubTaskListSerializer
 
 
@@ -23,7 +24,7 @@ class SubtaskListCreateView(generics.ListCreateAPIView):
 
 
 class SubtaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
 
     queryset = SubTask.objects.all()
     serializer_class = SubTaskSerializer
