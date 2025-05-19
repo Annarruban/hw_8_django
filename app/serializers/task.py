@@ -16,6 +16,7 @@ class TaskCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Deadline cannot be in the past")
         return value
 
+
     class Meta:
         model = Task
         fields = [
@@ -26,9 +27,12 @@ class TaskCreateSerializer(serializers.ModelSerializer):
         ]
 
 class TaskListSerializer(serializers.ModelSerializer):
+    owner = serializers.CharField(source='owner.username')
+
     class Meta:
         model = Task
         fields = [
+            'owner',
             'id',
             'title',
             'status',
@@ -36,7 +40,10 @@ class TaskListSerializer(serializers.ModelSerializer):
         ]
 
 class TaskDetailSerializer(serializers.ModelSerializer):
+    owner = serializers.CharField(source='owner.username')
+
     subtasks = SubTaskSerializer(many=True, read_only=True)
+    read_only_fields = ['owner']
 
     class Meta:
         model = Task
@@ -45,5 +52,6 @@ class TaskDetailSerializer(serializers.ModelSerializer):
             'title',
             'status',
             'deadline',
-            'subtasks'
+            'subtasks',
+            'owner'
         ]

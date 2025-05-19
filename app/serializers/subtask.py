@@ -7,14 +7,17 @@ class SubTaskSerializer(serializers.ModelSerializer):
     description = serializers.CharField(allow_blank=True, required=False)
     status = serializers.ChoiceField(choices=Task.STATUS_CHOICES)
     task_id = serializers.IntegerField()
+    owner = serializers.CharField(source='owner.username')
 
     deadline = serializers.DateTimeField()
     created_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = SubTask
+        read_only_fields = ['owner']
         fields = [
             'title',
+            'owner',
             'description',
             'status',
             'deadline',
@@ -26,10 +29,12 @@ class SubTaskSerializer(serializers.ModelSerializer):
 class SubTaskListSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubTask
+        read_only_fields = ['owner_id']
         fields = [
             'id',
             'title',
             'status',
             'deadline',
-            'task_id'
+            'task_id',
+            'owner_id'
         ]

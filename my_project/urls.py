@@ -22,7 +22,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from app import views
 from app.views.category import CategoryViewSet
-from app.views.task import TaskListCreateView,  TaskRetrieveUpdateDestroyView, task_stats
+from app.views.task import TaskListCreateView, UserTaskListView, TaskRetrieveUpdateDestroyView, task_stats
 from app.views.subtask import SubtaskRetrieveUpdateDestroyView, SubtaskListCreateView
 
 router = DefaultRouter()
@@ -35,6 +35,7 @@ urlpatterns = [
     path('greetings/', views.other.user_greetings),
     path('task/create/', TaskListCreateView.as_view(), name='task_create'),
     path('task/',  TaskListCreateView.as_view()),
+    path('task/my', UserTaskListView.as_view()),
     path('task/<int:task_id>/', TaskRetrieveUpdateDestroyView.as_view()),
     path('task/stats/', task_stats),
     path('subtask/', SubtaskListCreateView.as_view(), name='subtask-list-create'),

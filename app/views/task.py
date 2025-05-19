@@ -2,6 +2,7 @@ from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils import timezone
 from rest_framework.decorators import api_view
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import filters, generics
@@ -28,6 +29,17 @@ class TaskListCreateView(generics.ListCreateAPIView):
         if day_of_week:
             queryset = queryset.filter(created_at__week_day=day_of_week)
         return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class UserTaskListView(ListAPIView):
+    serializer_class = TaskListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Task.objects.filter(owner=self.request.user)
 
 
 @api_view(['GET'])

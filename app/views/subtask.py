@@ -18,6 +18,9 @@ class SubtaskListCreateView(generics.ListCreateAPIView):
     def get_serializer_class(self):
         return SubTaskSerializer if self.request.method == 'POST' else SubTaskListSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class SubtaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
