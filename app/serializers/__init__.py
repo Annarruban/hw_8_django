@@ -1,0 +1,1 @@
+from app.serializers.register import RegisterSerializer
