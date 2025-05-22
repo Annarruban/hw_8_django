@@ -26,7 +26,10 @@ from drf_yasg import openapi
 
 from app import views
 from app.views.category import CategoryViewSet
+from app.views.login import LoginView
+from app.views.logout import LogoutView
 from app.views.task import TaskListCreateView, UserTaskListView, TaskRetrieveUpdateDestroyView, task_stats
+from app.views.register import RegisterView
 from app.views.subtask import SubtaskRetrieveUpdateDestroyView, SubtaskListCreateView
 
 router = DefaultRouter()
@@ -46,6 +49,9 @@ schema_view = get_schema_view(
     )
 
 urlpatterns = [
+    path('login', LoginView.as_view(), name='login'),
+    path('logout', LogoutView.as_view(), name='logout'),
+    path('register', RegisterView.as_view(), name='register'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
